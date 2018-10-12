@@ -178,7 +178,7 @@ LIMIT 100</textarea>
 			savedbElm.addEventListener("click", savedb, true);
 		
 			main = async function() {
-				outputElm.textContent = "Loading mapdeaths.sqlite...";
+				outputElm.innerHTML = "Loading mapdeaths.sqlite...<br>It's around 19MB, can take a few seconds";
 				mapdeaths_response = await fetch("mapdeaths.sqlite");
 				mapdeaths_arraybuffer = await mapdeaths_response.arrayBuffer();
 				outputElm.innerHTML = "mapdeaths.sqlite is loaded, we are ready to go!<br><a href=\"https://www.youtube.com/watch?v=GyAAwCu-Lu4\">They say that rock shit / Doesn't rock anymore</a>";
