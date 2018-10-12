@@ -8,7 +8,7 @@
 		<script src="codemirror.js"></script>
 	</head>
 	<body>
-		<h1>Online SQL interpreter</h1>
+		<h3>GitHub: <a href="https://github.com/Lonsofore/CoD2MapDeaths">Lonsofore/CoD2MapDeaths</a> - <a href="https://github.com/KILLTUBE/CoD2MapDeaths.js">KILLTUBE/CoD2MapDeaths.js</a></h3>
 		<main>
 		<label for='commands'>Enter some SQL</label>
 		<br>
@@ -48,6 +48,7 @@ LIMIT 100</textarea>
 		</main>
 		<script src="codemirror/mode/sql/sql.js"></script>
 		<script type="text/javascript">
+			
 			execBtn = document.getElementById("execute");
 			outputElm = document.getElementById('output');
 			errorElm = document.getElementById('error');
@@ -69,6 +70,10 @@ LIMIT 100</textarea>
 				errorElm.style.height = '0';
 			}
 			execute = function(commands) { // Run a command in the database
+				if (typeof mapdeaths_arraybuffer == "undefined") {
+					outputElm.textContent = "Please wait till mapdeaths.sqlite is loaded";
+					return;
+				}
 				tic();
 				worker.onmessage = function(event) {
 					var results = event.data.results;
@@ -173,8 +178,10 @@ LIMIT 100</textarea>
 			savedbElm.addEventListener("click", savedb, true);
 		
 			main = async function() {
+				outputElm.textContent = "Loading mapdeaths.sqlite...";
 				mapdeaths_response = await fetch("mapdeaths.sqlite");
 				mapdeaths_arraybuffer = await mapdeaths_response.arrayBuffer();
+				outputElm.innerHTML = "mapdeaths.sqlite is loaded, we are ready to go!<br><a href=\"https://www.youtube.com/watch?v=GyAAwCu-Lu4\">They say that rock shit / Doesn't rock anymore</a>";
 				worker.postMessage({
 					action: 'open',
 					buffer: mapdeaths_arraybuffer
