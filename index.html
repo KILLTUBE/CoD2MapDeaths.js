@@ -12,6 +12,7 @@
 		<main>
 		<label for='commands'>Enter some SQL</label>
 		<br>
+		<!--
 		<textarea id="commands">DROP TABLE IF EXISTS employees;
 		CREATE TABLE employees( id          integer,  name    text,
 		designation text,     manager integer,
@@ -35,7 +36,10 @@
 
 		SELECT designation,COUNT(*) AS nbr, (AVG(salary)) AS avg_salary FROM employees GROUP BY designation ORDER BY avg_salary DESC;
 		SELECT name,hired_on FROM employees ORDER BY hired_on;
-		</textarea>
+		</textarea>-->
+		<textarea id="commands">SELECT *
+FROM deaths
+LIMIT 100</textarea>
 		<button id="execute" class="button">Execute</button>
 		<button id='savedb'  class="button">Save the db</button>
 		<label class="button">Load an SQLite database file: <input type='file' id='dbfile' ></label>
@@ -168,6 +172,17 @@
 			}
 			savedbElm.addEventListener("click", savedb, true);
 		
+			main = async function() {
+				mapdeaths_response = await fetch("mapdeaths.sqlite");
+				mapdeaths_arraybuffer = await mapdeaths_response.arrayBuffer();
+				worker.postMessage({
+					action: 'open',
+					buffer: mapdeaths_arraybuffer
+				});
+			}
+			main().then(function() {
+				console.log("mapdeaths loaded");
+			});
 		</script>
 	</body>
 </html>
